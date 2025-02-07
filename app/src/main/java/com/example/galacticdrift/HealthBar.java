@@ -10,12 +10,10 @@ public class HealthBar {
 
     public HealthBar() {
         healthPaint = new Paint();
-        healthPaint.setColor(Color.GREEN);
-
         borderPaint = new Paint();
         borderPaint.setColor(Color.WHITE);
         borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(4);
+        borderPaint.setStrokeWidth(6);
     }
 
     public void drawHealthBar(Canvas canvas, int life) {
@@ -27,7 +25,8 @@ public class HealthBar {
         int segmentWidth = barWidth / parallelogramCount;
         int skewOffset = 20;
 
-        healthPaint.setColor(life > 3 ? Color.GREEN : (life > 1 ? Color.rgb(255, 165, 0) : Color.RED));
+        healthPaint.setColor(life > 3 ? Color.parseColor("#00FF00") :
+                (life > 1 ? Color.parseColor("#FFFF00") : Color.parseColor("#FF0000")));
 
         for (int i = 0; i < parallelogramCount; i++) {
             if (i < life) {

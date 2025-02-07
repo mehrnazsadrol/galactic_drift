@@ -3,11 +3,14 @@ package com.example.galacticdrift;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
+
+import androidx.core.content.res.ResourcesCompat;
 
 public class HUD {
     private Paint scorePaint;
     private int score, life;
-    private static final int TEXT_SIZE = 120;
+    private static final int TEXT_SIZE = 90;
     private GameView gameView;
     private HealthBar healthBar;
 
@@ -17,23 +20,27 @@ public class HUD {
         this.score = 0;
 
         scorePaint = new Paint();
-        scorePaint.setColor(Color.rgb(255, 156, 0));
+        scorePaint.setColor(Color.parseColor("#00FFFF"));
         scorePaint.setTextSize(TEXT_SIZE);
         scorePaint.setTextAlign(Paint.Align.LEFT);
+        scorePaint.setTypeface(Typeface.create(ResourcesCompat.getFont(gameView.context, R.font.quicksand_semibold), 700, false));
+
 
         healthBar = new HealthBar();
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawText(String.valueOf(score * 10), 50, 150, scorePaint);
+        canvas.drawText(String.valueOf(score * 10), 70, 150, scorePaint);
         healthBar.drawHealthBar(canvas, life);
     }
 
-    public void handleCollision() {
+    public boolean handleCollision() {
         if (life > 0) {
             life--;
+            return true;
         } else {
-//            gameView.setGameOver();
+            gameView.setGameOver();
+            return false;
         }
     }
 
