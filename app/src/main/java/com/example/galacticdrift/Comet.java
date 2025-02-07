@@ -29,6 +29,7 @@ public class Comet {
     static int lastColision;
     static boolean hitEffect;
     private GameView gameView;
+    private boolean gameIsOver;
 
     public Comet (GameView gameView) {
         this.gameView = gameView;
@@ -45,6 +46,7 @@ public class Comet {
         positions = new ArrayList<>();
         rotationSpeed = new ArrayList<>();
         gameComets = new ArrayList<>();
+        gameIsOver = false;
         startGame();
     }
     private void triggerHitEffect() {
@@ -64,6 +66,7 @@ public class Comet {
         }
     }
     private void addComet () {
+
         int idx = random.nextInt(4);
         int scale = random.nextInt(5) + 4;
         int scaledWidth = GameView.screenWidth / scale;
@@ -104,6 +107,7 @@ public class Comet {
     }
 
     public void updatePositions(float spaceshipX, float spaceshipY, int spaceshipWidth, int spaceshipHeight) {
+        if (gameIsOver) return;
         for (int i = 0; i < positions.size(); i++) {
             Position pos = positions.get(i);
             pos.y += pos.v;
@@ -133,7 +137,9 @@ public class Comet {
                         if (hitPercentage > COLISION_THRESHOHLD) {
                             lastColision = i;
                             triggerHitEffect();
-                            gameView.handleCollision();
+                            if (!gameView.handleCollision()){
+                                gameIsOver = true;
+                            }
 
                         }
                     }
@@ -145,8 +151,9 @@ public class Comet {
 
                 if (i == lastColision) {
                     lastColision = -1;
+                } else {
+                    gameView.increaseScore();
                 }
-                gameView.increaseScore();
                 gameComets.remove(i);
                 positions.remove(i);
                 rotationSpeed.remove(i);
@@ -211,32 +218,6 @@ public class Comet {
             matrix.postRotate(pos.rotationAngle, gameComets.get(i).getWidth() / 2, gameComets.get(i).getHeight() / 2);
             matrix.postTranslate(pos.x, pos.y);
             canvas.drawBitmap(cometBitmap, matrix, null);
-
-            float left = pos.x;
-            float top = pos.y;
-            float right = left + cometBitmap.getWidth();
-            float bottom = top + cometBitmap.getHeight();
-
-            float[] rectangleVertices = {
-                    left, top,
-                    right, top,
-                    right, bottom,
-                    left, bottom
-            };
-
-            Matrix rotationMatrix = new Matrix();
-            float centerX = pos.x + cometBitmap.getWidth() / 2;
-            float centerY = pos.y + cometBitmap.getHeight() / 2;
-            rotationMatrix.postRotate(pos.rotationAngle, centerX, centerY);
-            rotationMatrix.mapPoints(rectangleVertices);
-
-            for (int j = 0; j < rectangleVertices.length; j += 2) {
-                float startX = rectangleVertices[j];
-                float startY = rectangleVertices[j + 1];
-                float endX = rectangleVertices[(j + 2) % rectangleVertices.length];
-                float endY = rectangleVertices[(j + 3) % rectangleVertices.length];
-                canvas.drawLine(startX, startY, endX, endY, borderPaint);
-            }
         }
         if (hitEffect) drawHitEffect(canvas);
     }

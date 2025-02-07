@@ -18,29 +18,24 @@ public class GameOver {
         this.gameView = gameView;
         this.isGameOver = false;
 
-        // Background paint
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.BLACK);
         backgroundPaint.setAlpha(200); // Semi-transparent black
 
-        // Text paint
         textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(150);
         textPaint.setTextAlign(Paint.Align.CENTER);
 
-        // Button paint
         buttonPaint = new Paint();
         buttonPaint.setColor(Color.rgb(255, 156, 0));
         buttonPaint.setStyle(Paint.Style.FILL);
 
-        // Button text paint
         buttonTextPaint = new Paint();
         buttonTextPaint.setColor(Color.WHITE);
         buttonTextPaint.setTextSize(80);
         buttonTextPaint.setTextAlign(Paint.Align.CENTER);
 
-        // Restart button position
         int buttonWidth = 400;
         int buttonHeight = 150;
         int centerX = GameView.screenWidth / 2;

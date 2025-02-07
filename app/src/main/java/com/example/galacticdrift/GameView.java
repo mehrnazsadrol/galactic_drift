@@ -52,7 +52,7 @@ public class GameView extends View {
         int navigationBarHeight = getNavigationBarHeight();
         screenHeight = size.y  - navigationBarHeight;
 
-        Bitmap oBackground = BitmapFactory.decodeResource(getResources(), R.drawable.galaxy_background);
+        Bitmap oBackground = BitmapFactory.decodeResource(getResources(), R.drawable.game_background_three);
         int oWidth = oBackground.getWidth();
         int oHeight = oBackground.getHeight();
         int scaledWidth = (int) ((float) screenHeight / oHeight * oWidth);
@@ -103,6 +103,7 @@ public class GameView extends View {
         };
         hud = new HUD(this);
         comet = new Comet(this);
+        gameOver = new GameOver(this);
         handler.post(runnable);
     }
     private int getNavigationBarHeight() {
@@ -140,8 +141,8 @@ public class GameView extends View {
         return true;
     }
 
-    public void handleCollision() {
-        hud.handleCollision();
+    public boolean handleCollision() {
+        return hud.handleCollision();
     }
     public void increaseScore () {
         hud.increaseScore();
