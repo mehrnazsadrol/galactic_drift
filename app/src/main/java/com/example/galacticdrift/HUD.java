@@ -3,9 +3,6 @@ package com.example.galacticdrift;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
-
-import androidx.core.content.res.ResourcesCompat;
 
 public class HUD {
     private Paint scorePaint;
@@ -23,8 +20,6 @@ public class HUD {
         scorePaint.setColor(Color.parseColor("#00FFFF"));
         scorePaint.setTextSize(TEXT_SIZE);
         scorePaint.setTextAlign(Paint.Align.LEFT);
-        scorePaint.setTypeface(Typeface.create(ResourcesCompat.getFont(gameView.context, R.font.quicksand_semibold), 700, false));
-
 
         healthBar = new HealthBar();
     }
