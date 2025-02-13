@@ -16,10 +16,10 @@ public class HealthBar {
         borderPaint.setStrokeWidth(6);
     }
 
-    public void drawHealthBar(Canvas canvas, int life) {
-        int barWidth = GameView.screenWidth/3;
+    public void drawHealthBar(Canvas canvas, int life, int screenW) {
+        int barWidth = screenW/3;
         int barHeight = 50;
-        int right = GameView.screenWidth - GameView.screenWidth/17;
+        int right = screenW - screenW/17;
         int top = 150;
         int parallelogramCount = 7;
         int segmentWidth = barWidth / parallelogramCount;

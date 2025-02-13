@@ -30,9 +30,12 @@ public class Comet {
     static boolean hitEffect;
     private GameView gameView;
     private boolean gameIsOver;
+    private int screenH, screenW;
 
     public Comet (GameView gameView) {
         this.gameView = gameView;
+        this.screenH = gameView.getScreenHeight();
+        this.screenW = gameView.getScreenWidth();
         Context context = gameView.getContext();
         comets[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.rock_one);
         comets[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.rock_two);
@@ -69,7 +72,7 @@ public class Comet {
 
         int idx = random.nextInt(4);
         int scale = random.nextInt(5) + 4;
-        int scaledWidth = GameView.screenWidth / scale;
+        int scaledWidth = screenW / scale;
         Bitmap temp = comets[idx];
         if (temp == null || temp.getWidth() <= 0 || temp.getHeight() <= 0) {
             Log.e("Comet", "Invalid bitmap dimensions: " + (temp == null ? "Bitmap is null" : "Width or height is zero"));
@@ -97,8 +100,8 @@ public class Comet {
     }
 
     private Position getInitialPos() {
-        int cX = random.nextInt(GameView.screenWidth - getCometWidth());
-        int cY = -random.nextInt(GameView.screenHeight) ;
+        int cX = random.nextInt(screenW - getCometWidth());
+        int cY = -random.nextInt(screenH) ;
         int cV = random.nextInt(VELOCITY) + 2;
 
         Position pos = new Position(cX, cY, cV);
@@ -147,7 +150,7 @@ public class Comet {
 
             }
 
-            if (pos.y > GameView.screenHeight) {
+            if (pos.y > screenH) {
 
                 if (i == lastColision) {
                     lastColision = -1;
@@ -192,17 +195,21 @@ public class Comet {
     private void drawHitEffect (Canvas canvas) {
         Paint borderPaint = new Paint();
         //top
-        borderPaint.setShader(new LinearGradient(0, 0, 0, 50, 0xFFFF0000, 0x00FF0000, android.graphics.Shader.TileMode.CLAMP));
-        canvas.drawRect(0, 0, GameView.screenWidth, 50, borderPaint);
+        borderPaint.setShader(new LinearGradient(0, 0, 0,
+                50, 0xFFFF0000, 0x00FF0000, android.graphics.Shader.TileMode.CLAMP));
+        canvas.drawRect(0, 0, screenW, 50, borderPaint);
         //bottom
-        borderPaint.setShader(new LinearGradient(0, GameView.screenHeight - 50, 0, GameView.screenHeight, 0x00FF0000, 0xFFFF0000, android.graphics.Shader.TileMode.CLAMP));
-        canvas.drawRect(0, GameView.screenHeight - 50, GameView.screenWidth, GameView.screenHeight, borderPaint);
+        borderPaint.setShader(new LinearGradient(0,
+                screenH - 50, 0, screenH, 0x00FF0000, 0xFFFF0000, android.graphics.Shader.TileMode.CLAMP));
+        canvas.drawRect(0, screenH - 50, screenW, screenH, borderPaint);
         //lef
         borderPaint.setShader(new LinearGradient(0, 0, 50, 0,0xFFFF0000, 0x00FF0000, android.graphics.Shader.TileMode.CLAMP));
-        canvas.drawRect(0, 0, 50, GameView.screenHeight, borderPaint);
+        canvas.drawRect(0, 0, 50, screenH, borderPaint);
         //right
-        borderPaint.setShader(new LinearGradient(GameView.screenWidth - 50, 0, GameView.screenWidth, 0, 0x00FF0000, 0xFFFF0000, android.graphics.Shader.TileMode.CLAMP));
-        canvas.drawRect(GameView.screenWidth - 50, 0, GameView.screenWidth, GameView.screenHeight, borderPaint);
+        borderPaint.setShader(new LinearGradient(screenW - 50,
+                0, screenW, 0, 0x00FF0000, 0xFFFF0000, android.graphics.Shader.TileMode.CLAMP));
+        canvas.drawRect(screenW - 50, 0,
+                screenW, screenH, borderPaint);
     }
 
     public void draw(Canvas canvas) {

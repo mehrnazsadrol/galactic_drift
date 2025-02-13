@@ -10,9 +10,11 @@ public class HUD {
     private static final int TEXT_SIZE = 90;
     private GameView gameView;
     private HealthBar healthBar;
+    private int screenW, screenH;
 
     public HUD(GameView gameView) {
         this.gameView = gameView;
+        this.screenW = gameView.getScreenWidth();
         this.life = 7;
         this.score = 0;
 
@@ -26,7 +28,7 @@ public class HUD {
 
     public void draw(Canvas canvas) {
         canvas.drawText(String.valueOf(score * 10), 70, 150, scorePaint);
-        healthBar.drawHealthBar(canvas, life);
+        healthBar.drawHealthBar(canvas, life, screenW);
     }
 
     public boolean handleCollision() {

@@ -13,7 +13,6 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int screenWidth, screenHeight = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +23,12 @@ public class MainActivity extends AppCompatActivity {
         blinkingButton.startAnimation(blinkAnimation);
     }
     public void startGame(View view){
-        GameView gameView = new GameView(this);
+        Rect visibleDisplayFrame = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(visibleDisplayFrame);
+        int availableWidth = visibleDisplayFrame.width();
+        int availableHeight = visibleDisplayFrame.height();
+
+        GameView gameView = new GameView(this, availableWidth, availableHeight);
         setContentView(gameView);
     }
 }

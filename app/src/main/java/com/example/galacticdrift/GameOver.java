@@ -13,9 +13,12 @@ public class GameOver {
     private Paint backgroundPaint, textPaint, buttonPaint, buttonTextPaint;
     private Rect buttonRect;
     private boolean isGameOver;
+    private int screenH, screenW;
 
     public GameOver(GameView gameView) {
         this.gameView = gameView;
+        this.screenH = gameView.getScreenHeight();
+        this.screenW = gameView.getScreenWidth();
         this.isGameOver = false;
 
         backgroundPaint = new Paint();
@@ -38,8 +41,8 @@ public class GameOver {
 
         int buttonWidth = 400;
         int buttonHeight = 150;
-        int centerX = GameView.screenWidth / 2;
-        int centerY = GameView.screenHeight / 2 + 200;
+        int centerX = screenW / 2;
+        int centerY = screenH / 2 + 200;
         buttonRect = new Rect(centerX - buttonWidth / 2, centerY - buttonHeight / 2,
                 centerX + buttonWidth / 2, centerY + buttonHeight / 2);
     }
@@ -48,17 +51,17 @@ public class GameOver {
         if (!isGameOver) return;
 
         // Draw semi-transparent background
-        canvas.drawRect(0, 0, GameView.screenWidth, GameView.screenHeight, backgroundPaint);
+        canvas.drawRect(0, 0, screenW, screenH, backgroundPaint);
 
         // Draw "Game Over" text
-        canvas.drawText("Game Over", GameView.screenWidth / 2, GameView.screenHeight / 3, textPaint);
+        canvas.drawText("Game Over", screenW / 2, screenH / 3, textPaint);
 
         // Draw final score
-        canvas.drawText("Score: " + (finalScore * 10), GameView.screenWidth / 2, GameView.screenHeight / 2, textPaint);
+        canvas.drawText("Score: " + (finalScore * 10), screenW / 2, screenH / 2, textPaint);
 
         // Draw restart button
         canvas.drawRect(buttonRect, buttonPaint);
-        canvas.drawText("Restart", GameView.screenWidth / 2, buttonRect.centerY() + 30, buttonTextPaint);
+        canvas.drawText("Restart", screenW / 2, buttonRect.centerY() + 30, buttonTextPaint);
     }
 
     public void setGameOver() {
