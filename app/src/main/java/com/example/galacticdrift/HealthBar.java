@@ -26,7 +26,7 @@ public class HealthBar {
         int skewOffset = 20;
 
         healthPaint.setColor(life > 3 ? Color.parseColor("#00FF00") :
-                (life > 1 ? Color.parseColor("#FFFF00") : Color.parseColor("#FF0000")));
+            (life > 1 ? Color.parseColor("#FFFF00") : Color.parseColor("#FF0000")));
 
         for (int i = 0; i < parallelogramCount; i++) {
             if (i < life) {

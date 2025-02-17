@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/first_page_background" />
+        android:src="@drawable/main_background" />
 
     <Button
         android:id="@+id/blinking_button"

@@ -1,19 +1,24 @@
 package com.example.galacticdrift;
 
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.view.MotionEvent;
-import android.view.View;
+
+import androidx.core.content.res.ResourcesCompat;
 
 public class GameOver {
     private GameView gameView;
-    private Paint backgroundPaint, textPaint, buttonPaint, buttonTextPaint;
+    private Paint textPaint, buttonPaint, buttonTextPaint;
     private Rect buttonRect;
     private boolean isGameOver;
     private int screenH, screenW;
+    private Bitmap background;
+    private Rect rectCanvas;
 
     public GameOver(GameView gameView) {
         this.gameView = gameView;
@@ -21,18 +26,43 @@ public class GameOver {
         this.screenW = gameView.getScreenWidth();
         this.isGameOver = false;
 
-        backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.BLACK);
-        backgroundPaint.setAlpha(200); // Semi-transparent black
+        Bitmap oBackground = BitmapFactory.decodeResource(gameView.getContext().getResources(), R.drawable.main_background);
+        int oWidth = oBackground.getWidth();
+        int oHeight = oBackground.getHeight();
+
+        float screenRatio = (float) screenW / screenH;
+        float imageRatio = (float) oWidth / oHeight;
+
+        int cropWidth = oWidth;
+        int cropHeight = oHeight;
+        int cropX = 0;
+        int cropY = 0;
+
+        if (imageRatio > screenRatio) {
+            cropWidth = (int) (oHeight * screenRatio);
+            cropX = (oWidth - cropWidth) / 2;
+        } else if (imageRatio < screenRatio) {
+            cropHeight = (int) (oWidth / screenRatio);
+            cropY = (oHeight - cropHeight) / 2;
+        }
+        Bitmap croppedBackground = Bitmap.createBitmap(oBackground, cropX, cropY, cropWidth, cropHeight);
+        imageRatio = (float) croppedBackground.getWidth()/croppedBackground.getHeight();
+        background = Bitmap.createScaledBitmap(croppedBackground, screenW, screenH, true);
+        oBackground.recycle();
+        croppedBackground.recycle();
+
+        rectCanvas = new Rect(0, 0, screenW, screenH);
 
         textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
-        textPaint.setTextSize(150);
+
         textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setTypeface(ResourcesCompat.getFont(gameView.getContext(), R.font.quicksand_semibold));
 
         buttonPaint = new Paint();
         buttonPaint.setColor(Color.rgb(255, 156, 0));
         buttonPaint.setStyle(Paint.Style.FILL);
+
 
         buttonTextPaint = new Paint();
         buttonTextPaint.setColor(Color.WHITE);
@@ -44,29 +74,25 @@ public class GameOver {
         int centerX = screenW / 2;
         int centerY = screenH / 2 + 200;
         buttonRect = new Rect(centerX - buttonWidth / 2, centerY - buttonHeight / 2,
-                centerX + buttonWidth / 2, centerY + buttonHeight / 2);
+            centerX + buttonWidth / 2, centerY + buttonHeight / 2);
     }
 
     public void draw(Canvas canvas, int finalScore) {
-        if (!isGameOver) return;
-
-        // Draw semi-transparent background
-        canvas.drawRect(0, 0, screenW, screenH, backgroundPaint);
-
-        // Draw "Game Over" text
+        canvas.drawBitmap(background, null, rectCanvas, null);
+        textPaint.setTextSize(150);
         canvas.drawText("Game Over", screenW / 2, screenH / 3, textPaint);
-
-        // Draw final score
-        canvas.drawText("Score: " + (finalScore * 10), screenW / 2, screenH / 2, textPaint);
-
-        // Draw restart button
-        canvas.drawRect(buttonRect, buttonPaint);
+        textPaint.setTextSize(100);
+        canvas.drawText("Final Score: " + (finalScore * 10), screenW / 2, screenH * 5 / 12, textPaint);
+        canvas.drawRoundRect(new RectF(buttonRect), 50f, 50f, buttonPaint);
         canvas.drawText("Restart", screenW / 2, buttonRect.centerY() + 30, buttonTextPaint);
     }
 
     public void setGameOver() {
-
         this.isGameOver = !isGameOver;
+    }
+
+    public boolean isGameOver(){
+        return this.isGameOver;
     }
 
     public boolean handleTouchEvent(MotionEvent event) {
@@ -83,6 +109,6 @@ public class GameOver {
 
     private void restartGame() {
         isGameOver = false;
-//        gameView.resetGame();
+        gameView.resetGame();
     }
 }

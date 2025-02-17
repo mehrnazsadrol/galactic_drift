@@ -8,17 +8,13 @@ import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Handler;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.WindowManager;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Comet {
-    final int VELOCITY = 5;
-    final int ROTATION_SPEED = 5;
-    final static int COLISION_THRESHOHLD = 25;
+    private final int VELOCITY = 5;
+    private final int ROTATION_SPEED = 5;
+    private final int COLISION_THRESHOHLD = 25;
     private static final int HIT_EFFECT_DURATION = 5000;
     private Handler handler;
     Bitmap comets[] = new Bitmap[4];
@@ -75,7 +71,6 @@ public class Comet {
         int scaledWidth = screenW / scale;
         Bitmap temp = comets[idx];
         if (temp == null || temp.getWidth() <= 0 || temp.getHeight() <= 0) {
-            Log.e("Comet", "Invalid bitmap dimensions: " + (temp == null ? "Bitmap is null" : "Width or height is zero"));
             return;
         }
         int scaledHeight = (int) ((float) temp.getHeight() / temp.getWidth() * scaledWidth);
@@ -127,12 +122,12 @@ public class Comet {
             float cometY = pos.y;
 
             if (isCollision(
-                    spaceshipX, spaceshipY, spaceshipWidth, spaceshipHeight,
-                    cometX, cometY, cometWidth, cometHeight
+                spaceshipX, spaceshipY, spaceshipWidth, spaceshipHeight,
+                cometX, cometY, cometWidth, cometHeight
             )) {
                 if ( i != lastColision) {
                     float collisionArea = getCollisionArea(spaceshipX, spaceshipY, spaceshipWidth, spaceshipHeight,
-                            cometX, cometY, cometWidth, cometHeight);
+                        cometX, cometY, cometWidth, cometHeight);
                     float spaceshipArea = spaceshipWidth * spaceshipHeight;
 
                     if (collisionArea > 0) {
@@ -168,8 +163,8 @@ public class Comet {
 
     }
     private float getCollisionArea(
-            float x1, float y1, int width1, int height1,
-            float x2, float y2, int width2, int height2
+        float x1, float y1, int width1, int height1,
+        float x2, float y2, int width2, int height2
     ) {
         float left = Math.max(x1, x2);
         float right = Math.min(x1 + width1, x2 + width2);
@@ -184,32 +179,32 @@ public class Comet {
 
 
     private boolean isCollision( float x1, float y1, int width1, int height1,
-            float x2, float y2, int width2, int height2
+                                 float x2, float y2, int width2, int height2
     ) {
         return x1 < x2 + width2 &&
-                x1 + width1 > x2 &&
-                y1 < y2 + height2 &&
-                y1 + height1 > y2;
+            x1 + width1 > x2 &&
+            y1 < y2 + height2 &&
+            y1 + height1 > y2;
     }
 
     private void drawHitEffect (Canvas canvas) {
         Paint borderPaint = new Paint();
         //top
         borderPaint.setShader(new LinearGradient(0, 0, 0,
-                50, 0xFFFF0000, 0x00FF0000, android.graphics.Shader.TileMode.CLAMP));
+            50, 0xFFFF0000, 0x00FF0000, android.graphics.Shader.TileMode.CLAMP));
         canvas.drawRect(0, 0, screenW, 50, borderPaint);
         //bottom
         borderPaint.setShader(new LinearGradient(0,
-                screenH - 50, 0, screenH, 0x00FF0000, 0xFFFF0000, android.graphics.Shader.TileMode.CLAMP));
+            screenH - 50, 0, screenH, 0x00FF0000, 0xFFFF0000, android.graphics.Shader.TileMode.CLAMP));
         canvas.drawRect(0, screenH - 50, screenW, screenH, borderPaint);
         //lef
         borderPaint.setShader(new LinearGradient(0, 0, 50, 0,0xFFFF0000, 0x00FF0000, android.graphics.Shader.TileMode.CLAMP));
         canvas.drawRect(0, 0, 50, screenH, borderPaint);
         //right
         borderPaint.setShader(new LinearGradient(screenW - 50,
-                0, screenW, 0, 0x00FF0000, 0xFFFF0000, android.graphics.Shader.TileMode.CLAMP));
+            0, screenW, 0, 0x00FF0000, 0xFFFF0000, android.graphics.Shader.TileMode.CLAMP));
         canvas.drawRect(screenW - 50, 0,
-                screenW, screenH, borderPaint);
+            screenW, screenH, borderPaint);
     }
 
     public void draw(Canvas canvas) {
@@ -228,4 +223,13 @@ public class Comet {
         }
         if (hitEffect) drawHitEffect(canvas);
     }
+
+    public void reset() {
+        gameComets.clear();
+        positions.clear();
+        rotationSpeed.clear();
+        lastColision = -1;
+        gameIsOver = false;
+    }
+
 }

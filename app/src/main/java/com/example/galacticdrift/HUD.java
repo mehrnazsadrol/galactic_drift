@@ -5,17 +5,20 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class HUD {
+
+    private final int LIFE_COUNT = 7;
+    private static final int TEXT_SIZE = 90;
+
     private Paint scorePaint;
     private int score, life;
-    private static final int TEXT_SIZE = 90;
     private GameView gameView;
     private HealthBar healthBar;
-    private int screenW, screenH;
+    private int screenW;
 
     public HUD(GameView gameView) {
         this.gameView = gameView;
         this.screenW = gameView.getScreenWidth();
-        this.life = 7;
+        this.life = LIFE_COUNT;
         this.score = 0;
 
         scorePaint = new Paint();
@@ -50,7 +53,7 @@ public class HUD {
     }
 
     public void resetLife() {
-        life = 5;
+        life = LIFE_COUNT;
     }
 
     public void resetScore() {
