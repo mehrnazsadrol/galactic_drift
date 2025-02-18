@@ -68,7 +68,3 @@ Far in the future, humanity’s final space colony hovers on the brink of destru
 2. Open **GalacticDrift** in Android Studio.
 3. Build and run on your device or Android emulator.
 
----
-
-## License
-*(Include your license text here, if applicable.)*
