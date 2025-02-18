@@ -51,6 +51,10 @@ public class Comet {
         gameIsOver = false;
         startGame();
     }
+
+    /**
+     * Triggers the red hit effect on screen when a collision occurs.
+     */
     private void triggerHitEffect() {
         hitEffect = true;
         handler.postDelayed(() -> {
@@ -59,6 +63,11 @@ public class Comet {
         }, HIT_EFFECT_DURATION);
     }
 
+
+    /**
+     * Starts the comet spawning process.
+     * Generates a random number of comets at different positions.
+     */
     private void startGame(){
         int count = random.nextInt(5) + 1;
         for (int i=0; i<count; i++){
@@ -67,6 +76,10 @@ public class Comet {
             rotationSpeed.add(random.nextFloat() * ROTATION_SPEED);
         }
     }
+
+    /**
+     * Adds a new comet with a random size and kind.
+     */
     private void addComet () {
 
         int idx = random.nextInt(4);
@@ -83,6 +96,9 @@ public class Comet {
         }
     }
 
+    /**
+     * Resets and spawns a small number of new comets when needed.
+     */
     private void resetGameComets () {
         int newCount = random.nextInt(2) + 1;
         for (int i=0; i < newCount; i++) {
@@ -97,6 +113,12 @@ public class Comet {
         return gameComets.get(idx).getWidth();
     }
 
+
+    /**
+     * Generates a new initial position for a comet.
+     *
+     * @return A Position object representing the new comet's location.
+     */
     private Position getInitialPos() {
         int cX = random.nextInt(screenW - getCometWidth());
         int cY = -random.nextInt(screenH/4) - 50 ;
@@ -107,6 +129,16 @@ public class Comet {
         return pos;
     }
 
+
+    /**
+     * Updates the position and rotation of all active comets.
+     * Also checks for collisions and rewards the player for dodging comets.
+     *
+     * @param spaceshipX       X-coordinate of the spaceship.
+     * @param spaceshipY       Y-coordinate of the spaceship.
+     * @param spaceshipWidth   Width of the spaceship.
+     * @param spaceshipHeight  Height of the spaceship.
+     */
     public void updatePositions(float spaceshipX, float spaceshipY, int spaceshipWidth, int spaceshipHeight) {
         if (gameIsOver) return;
         for (int i = 0; i < positions.size(); i++) {
@@ -136,6 +168,7 @@ public class Comet {
                     if (collisionArea > 0) {
                         float hitPercentage = (collisionArea / spaceshipArea) * 100;
                         if (hitPercentage > COLISION_THRESHOHLD) {
+                            passedCometsStreak = 0;
                             lastColision = i;
                             triggerHitEffect();
                             if (!gameView.handleCollision()){
@@ -185,6 +218,11 @@ public class Comet {
     }
 
 
+    /**
+     * Determines if two rectangles (spaceship and comet) overlap.
+     *
+     * @return True if collision occurs, false otherwise.
+     */
     private boolean isCollision( float x1, float y1, int width1, int height1,
                                  float x2, float y2, int width2, int height2
     ) {
@@ -214,6 +252,12 @@ public class Comet {
             screenW, screenH, borderPaint);
     }
 
+
+    /**
+     * Draws all active comets and the hit effect if triggered.
+     *
+     * @param canvas The canvas to draw the comets on.
+     */
     public void draw(Canvas canvas) {
         Paint borderPaint = new Paint();
         borderPaint.setStyle(Paint.Style.STROKE);
@@ -231,6 +275,10 @@ public class Comet {
         if (hitEffect) drawHitEffect(canvas);
     }
 
+
+    /**
+     * Resets all comets, clearing their positions and resetting game status.
+     */
     public void reset() {
         gameComets.clear();
         positions.clear();

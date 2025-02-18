@@ -1,3 +1,12 @@
+/*
+ * ----------------------------------------------------------------
+ * Program Name: GameView
+ * Description: This class extends the Android View to manage the
+ *              main gameplay. It handles the background,
+ *              spaceship, comets, and heads-up display (HUD).
+ * ----------------------------------------------------------------
+ */
+
 package com.example.galacticdrift;
 
 import android.graphics.Bitmap;
@@ -8,7 +17,10 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-
+/**
+ * GameView class: Custom View that implements the main game loop,
+ * drawing, and user touch handling for the game.
+ */
 public class GameView extends View {
 
     Context context;
@@ -28,7 +40,20 @@ public class GameView extends View {
     private GameOver gameOver;
 
 
-
+    /**
+     * Method Name: GameView (Constructor)
+     * Description:
+     *     Initializes the game view, sets up background, spaceship,
+     *     and starts the game loop via Handler & Runnable.
+     *
+     * @param context: The Android application context.
+     * @param screenWidth: The width of the device screen.
+     * @param screenHeight: The height of the device screen.
+     *
+     * Called By:
+     *     - Main Activity.
+     *
+     */
     public GameView(Context context, int screenWidth, int screenHeight) {
         super(context);
         this.context = context;
@@ -58,6 +83,15 @@ public class GameView extends View {
         handler.post(runnable);
     }
 
+    /**
+     * Method Name: moveSpaceshipTowardsTarget
+     * Description:
+     *     Moves the spaceship horizontally toward the user's tap/drag target.
+     *     Ensures the spaceship does not exceed screen bounds.
+     *
+     * Called By:
+     *     - The Runnable within the constructor (game loop).
+     */
     private void moveSpaceshipTowardsTarget() {
         float spaceshipCenterX = spaceshipX + spaceshipWidth / 2;
         float distanceToTarget = targetX - spaceshipCenterX;
@@ -71,7 +105,6 @@ public class GameView extends View {
             // Move left
             spaceshipX -= MOVE_SHIFT;
         }
-
         if (spaceshipX < 0) {
             spaceshipX = 0;
         } else if (spaceshipX + spaceshipWidth > screenWidth) {
@@ -80,6 +113,10 @@ public class GameView extends View {
     }
 
 
+    /**
+     * Loads, crops, and scales the background image to fit the screen
+     * while preserving the original aspect ratio.
+     */
     private void initBackground() {
         Bitmap originalBackground = BitmapFactory.decodeResource(getResources(), R.drawable.game_background);
         int originalWidth = originalBackground.getWidth();
@@ -106,6 +143,10 @@ public class GameView extends View {
         croppedBackground.recycle();
     }
 
+    /**
+     * Loads and scales the spaceship image based on the screen width.
+     * Initializes the spaceship's start position near the bottom center of the screen.
+     */
     private void iniSpaceship(){
 
         Bitmap originalSpaceship = BitmapFactory.decodeResource(getResources(), R.drawable.spaceship);
@@ -123,6 +164,9 @@ public class GameView extends View {
         spaceshipY = screenHeight -  ((float) 1.75 * scaledHeight);
     }
 
+    /**
+     * @param canvas The Canvas on which the background, spaceship, comets, and HUD are drawn
+     */
 
     @Override
     protected void onDraw(Canvas canvas){
@@ -137,6 +181,14 @@ public class GameView extends View {
         }
     }
 
+
+    /**
+     * Captures user touch events to either move the spaceship (if game is active)
+     * or handle game-over logic (restart) if the game is already over.
+     *
+     * @param event MotionEvent containing touch coordinates and action type
+     * @return boolean indicating whether the event was handled
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event){
 
@@ -158,22 +210,48 @@ public class GameView extends View {
         return true;
     }
 
+    /**
+     * Informs the HUD that a collision has occurred (reduces life).
+     *
+     * @return boolean value from hud.handleCollision() (could indicate if game over is triggered)
+     */
     public boolean handleCollision() {
         return hud.handleCollision();
     }
+
+    /**
+     * Increments the player's score in the HUD.
+     */
     public void increaseScore () {
         hud.increaseScore();
     }
+
+    /**
+     * Signals the GameOver object to mark the game as over.
+     */
     public void setGameOver(){
         gameOver.setGameOver();
     }
+
+
+    /**
+     * @return the screen width in pixels
+     */
     public int getScreenWidth() {
         return screenWidth;
     }
+
+    /**
+     * @return the screen height in pixels
+     */
     public int getScreenHeight() {
         return screenHeight;
     }
 
+
+    /**
+     * Resets the game state to allow a fresh start. Resets score, lives, comets and spaceship position.
+     */
     public void resetGame() {
         hud.resetScore();
         hud.resetLife();
@@ -185,6 +263,9 @@ public class GameView extends View {
         invalidate();
     }
 
+    /**
+     * Adds one life to the HUD, capped at a maximum.
+     */
     public void addLifeToHUD () {
         hud.addLife();
     }
