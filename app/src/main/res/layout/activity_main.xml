@@ -10,13 +10,27 @@
         android:scaleType="centerCrop"
         android:src="@drawable/main_background" />
 
+    <TextView
+        android:id="@+id/my_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Galactic Drift"
+        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        android:fontFamily="@font/quicksand_semibold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90sp"
+        />
+
     <Button
         android:id="@+id/blinking_button"
         style="@style/BlinkingButtonStyle"
         android:layout_centerInParent="true"
         android:text="START"
         android:textColorLink="#003F51B5"
-        android:textSize="14pt"
+        android:textSize="32sp"
+        android:fontFamily="@font/quicksand_semibold"
+        android:textAlignment="center"
         android:onClick="startGame"/>
 
 

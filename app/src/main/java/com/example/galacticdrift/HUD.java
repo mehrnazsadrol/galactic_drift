@@ -35,7 +35,7 @@ public class HUD {
     }
 
     public boolean handleCollision() {
-        if (life > 0) {
+        if (life > 1) {
             life--;
             return true;
         } else {
@@ -58,5 +58,10 @@ public class HUD {
 
     public void resetScore() {
         score = 0;
+    }
+
+    public void addLife() {
+        if ( life < 7)
+            life ++;
     }
 }

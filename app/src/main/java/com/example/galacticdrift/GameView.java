@@ -185,5 +185,9 @@ public class GameView extends View {
         invalidate();
     }
 
+    public void addLifeToHUD () {
+        hud.addLife();
+    }
+
 
 }

@@ -16,6 +16,7 @@ public class Comet {
     private final int ROTATION_SPEED = 5;
     private final int COLISION_THRESHOHLD = 25;
     private static final int HIT_EFFECT_DURATION = 5000;
+    private final int PASSED_COMET_STREAK_REWARD = 10;
     private Handler handler;
     Bitmap comets[] = new Bitmap[4];
     ArrayList<Position> positions;
@@ -27,6 +28,8 @@ public class Comet {
     private GameView gameView;
     private boolean gameIsOver;
     private int screenH, screenW;
+    private int passedCometsStreak = 0;
+
 
     public Comet (GameView gameView) {
         this.gameView = gameView;
@@ -96,7 +99,7 @@ public class Comet {
 
     private Position getInitialPos() {
         int cX = random.nextInt(screenW - getCometWidth());
-        int cY = -random.nextInt(screenH) ;
+        int cY = -random.nextInt(screenH/4) - 50 ;
         int cV = random.nextInt(VELOCITY) + 2;
 
         Position pos = new Position(cX, cY, cV);
@@ -146,7 +149,7 @@ public class Comet {
             }
 
             if (pos.y > screenH) {
-
+                passedCometsStreak++;
                 if (i == lastColision) {
                     lastColision = -1;
                 } else {
@@ -158,6 +161,10 @@ public class Comet {
                 if(gameComets.size() < 8) {
                     resetGameComets();
                 }
+            }
+            if (passedCometsStreak >= PASSED_COMET_STREAK_REWARD) {
+                gameView.addLifeToHUD();
+                passedCometsStreak = 0;
             }
         }
 
