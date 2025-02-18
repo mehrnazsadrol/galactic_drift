@@ -3,23 +3,6 @@
 ## Overview
 **Galactic Drift** is an endless dodge-and-collect game set in a distant future where humanity’s final space colony hovers on the brink of destruction. Players pilot a sentient spaceship, defending the colony against waves of asteroids and comets. Earn points by avoiding hazards, and gain extra lives by dodging multiple comets in a row.
 
----
-
-## Screenshots
-
-### Start Page
-![Start Page](app/src/main/res/screenshots/start_page.png)
-
-### Main Gameplay
-![Main Gameplay](app/src/main/res/screenshots/main_game_play.png)
-
-### Game Over Screen
-![Game Over Screen](app/src/main/res/screenshots/game_over.png)
-
-*(If the images don’t appear, confirm the filenames and folder paths are correct.)*
-
----
-
 ## Game Design Document
 
 ### Backstory
@@ -48,16 +31,19 @@ Far in the future, humanity’s final space colony hovers on the brink of destru
 ### Game Flow
 1. **Start Page**  
    - The title screen welcomes the player. Tapping the blinking “Start” begins the main game loop.
+![Start Page](/app/src/main/res/screenshots/start_page.png)
 
 2. **Main Gameplay**  
    - Player moves the spaceship horizontally (via tap or hold).
    - Comets spawn randomly at the top, moving downward.
    - The player accumulates points by avoiding collisions.
    - Every 10 consecutive comets avoided yields +1 life (if under the max).
+![Main Gameplay](/app/src/main/res/screenshots/main_game_play.png)
 
 3. **Game Over**  
    - Triggered if spaceship health depletes to zero.
    - The results screen displays total points and a “Restart” button.
+![Game Over Screen](/app/src/main/res/screenshots/game_over.png)
 
 4. **Restart**  
    - The player returns to the game immediately, resetting scores and comets.
@@ -82,7 +68,3 @@ Far in the future, humanity’s final space colony hovers on the brink of destru
 2. Open **GalacticDrift** in Android Studio.
 3. Build and run on your device or Android emulator.
 
----
-
-## License
-*(Include your license text here, if applicable.)*
